@@ -2,6 +2,8 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+
+    kotlin(KotlinPlugins.serialization) version Kotlin.version
 }
 
 version = "1.0"
@@ -23,14 +25,23 @@ kotlin {
     }
     
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(Ktor.core)
+                implementation(Ktor.clientSerialization)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(Ktor.android)
+            }
+        }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
@@ -45,6 +56,10 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             //iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation(Ktor.ios)
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting

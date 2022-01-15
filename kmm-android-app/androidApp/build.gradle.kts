@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -21,7 +22,13 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+
+    implementation(AndroidX.core)
+    implementation(AndroidX.viewModel)
+    kapt(AndroidX.viewModelCompiler)
+    implementation(AndroidX.material)
+    implementation(AndroidX.appCompat)
+    implementation(AndroidX.constraintLayout)
+
+    implementation(Ktor.android)
 }
