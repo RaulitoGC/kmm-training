@@ -1,0 +1,14 @@
+CREATE TABLE  friend_Entity(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    lastName TEXT NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM friend_Entity;
+
+insertFriend:
+INSERT OR REPLACE
+INTO friend_Entity
+VALUES (?, ?, ?);

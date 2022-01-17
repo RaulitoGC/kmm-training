@@ -1,23 +1,33 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
 
     kotlin(KotlinPlugins.serialization) version Kotlin.version
+    id(Plugins.sqlDelight)
 }
 
 version = "1.0"
 
+android {
+    compileSdk = 32
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdk = 26
+        targetSdk = 32
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
 kotlin {
     android()
     ios()
-//    iosSimulatorArm64()
-//  iosSimulatorArm64()
-
-//    iosX64()
-//    iosArm64()
-//    iosSimulatorArm64() sure all ios dependencies support this target
-
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -35,6 +45,7 @@ kotlin {
             dependencies {
                 implementation(Ktor.core)
                 implementation(Ktor.clientSerialization)
+                implementation(SQLDelight.runtime)
             }
         }
 //        val commonTest by getting {
@@ -47,6 +58,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Ktor.android)
+                implementation(SQLDelight.androidDriver)
             }
         }
 //        val androidTest by getting {
@@ -65,6 +77,7 @@ kotlin {
 
             dependencies {
                 implementation(Ktor.ios)
+                implementation(SQLDelight.nativeDriver)
             }
         }
 
@@ -85,16 +98,9 @@ kotlin {
     }
 }
 
-android {
-    compileSdk = 32
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = 26
-        targetSdk = 32
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+sqldelight {
+    database("FriendsDataBase") {
+        packageName = "com.rguzmanc.friends.datasource.cache"
+        sourceFolders = listOf("sqldelight")
     }
 }

@@ -12,14 +12,16 @@ import shared
 class FriendListViewModel: ObservableObject{
     
     let getFriends : GetFriends
+    let addFriend: AddFriend
     
     @Published var isLoading : Bool = false
     @Published var showError: Bool = false
     @Published var friends: [Friend] = []
     
     
-    init(getFriends: GetFriends){
+    init(getFriends: GetFriends, addFriend: AddFriend){
         self.getFriends = getFriends
+        self.addFriend = addFriend
         loadFriends()
     }
     
@@ -35,6 +37,15 @@ class FriendListViewModel: ObservableObject{
             
             self.updateLoading(showLoading: false)
         })
+    }
+    
+    func insertRandomFriend(){
+        updateLoading(showLoading: true)
+        addFriend
+            .execute()
+            .collectCommon(coroutineScope: nil, callback: { dataState  in
+                self.loadFriends()
+            })
     }
     
     private func updateLoading(showLoading: Bool){

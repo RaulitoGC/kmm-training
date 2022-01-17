@@ -5,10 +5,11 @@ import shared
 struct iOSApp: App {
     
     let networkModule = NetworkModule()
+    let cacheModule = CacheModule()
     
 	var body: some Scene {
         WindowGroup {
-			ContentView(networkModule: networkModule)
+			ContentView(networkModule: networkModule, cacheModule: cacheModule)
 		}
 	}
 }
