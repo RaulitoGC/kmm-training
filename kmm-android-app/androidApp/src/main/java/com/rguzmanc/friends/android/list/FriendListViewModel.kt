@@ -1,15 +1,24 @@
 package com.rguzmanc.friends.android.list
 
+import android.content.Context
 import androidx.lifecycle.*
 import com.rguzmanc.friends.android.util.OneTimeEvent
 import com.rguzmanc.friends.android.util.toOneTimeEvent
+import com.rguzmanc.friends.datasource.cache.DriverFactory
+import com.rguzmanc.friends.datasource.cache.FriendCache
+import com.rguzmanc.friends.datasource.cache.FriendDatabaseFactory
 import com.rguzmanc.friends.datasource.network.FriendService
 import com.rguzmanc.friends.datasource.network.KtorClientFactory
+import com.rguzmanc.friends.domain.AddFriend
 import com.rguzmanc.friends.domain.GetFriends
 import com.rguzmanc.friends.domain.model.Friend
 import kotlinx.coroutines.launch
 
-class FriendListViewModel(private val getFriends: GetFriends) : ViewModel() {
+class FriendListViewModel(
+    private val getFriends: GetFriends,
+    private val addFriend: AddFriend
+
+) : ViewModel() {
 
     private val _viewState = MutableLiveData<OneTimeEvent<ViewState>>()
     val viewState: LiveData<OneTimeEvent<ViewState>> = _viewState
@@ -40,6 +49,15 @@ class FriendListViewModel(private val getFriends: GetFriends) : ViewModel() {
             }
     }
 
+    fun generateRandomFriend(){
+        updateViewState(ViewState.Loading(true))
+        addFriend
+            .execute()
+            .collectCommon {
+                getFriends()
+            }
+    }
+
     private fun updateViewState(viewState: ViewState) {
         _viewState.value = viewState.toOneTimeEvent()
     }
@@ -50,7 +68,7 @@ class FriendListViewModel(private val getFriends: GetFriends) : ViewModel() {
     }
 }
 
-class FriendListViewModelFactory : ViewModelProvider.Factory {
+class FriendListViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val friendService = FriendService(
@@ -58,8 +76,14 @@ class FriendListViewModelFactory : ViewModelProvider.Factory {
             baseUrl = "https://private-908651-friends15.apiary-mock.com/"
         )
 
-        val getFriends = GetFriends(friendService)
-        return FriendListViewModel(getFriends) as T
+        val driver = DriverFactory(context)
+        val friendCache = FriendCache(
+            friendsDataBase = FriendDatabaseFactory(driver).createDatabase()
+        )
+
+        val getFriends = GetFriends(friendService, friendCache)
+        val addFriend = AddFriend(friendCache)
+        return FriendListViewModel(getFriends, addFriend) as T
     }
 
 }

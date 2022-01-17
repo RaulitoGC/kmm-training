@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.rguzmanc.friends.android.R
 import com.rguzmanc.friends.android.util.consumeOnce
 
@@ -25,12 +26,13 @@ class FriendListFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var fbAdd: FloatingActionButton
 
     private lateinit var friendListViewModel: FriendListViewModel
     override fun onAttach(context: Context) {
         super.onAttach(context)
         friendListViewModel =
-            ViewModelProvider(this, FriendListViewModelFactory())[FriendListViewModel::class.java]
+            ViewModelProvider(this, FriendListViewModelFactory(requireContext()))[FriendListViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -41,6 +43,7 @@ class FriendListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_friend_list, container, false)
         recyclerView = view.findViewById(R.id.recycler_view)
         progressBar = view.findViewById(R.id.progress)
+        fbAdd = view.findViewById(R.id.fb_add)
         return view
     }
 
@@ -49,6 +52,10 @@ class FriendListFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = FriendAdapter()
+
+        fbAdd.setOnClickListener {
+            friendListViewModel.generateRandomFriend()
+        }
 
         friendListViewModel.friends.observe(viewLifecycleOwner, { friends ->
             friends.consumeOnce {
