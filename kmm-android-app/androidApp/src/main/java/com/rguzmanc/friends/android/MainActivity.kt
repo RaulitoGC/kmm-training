@@ -2,7 +2,6 @@ package com.rguzmanc.friends.android
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.rguzmanc.friends.Greeting
 import com.rguzmanc.friends.android.list.FriendListFragment
 
 class MainActivity : AppCompatActivity() {

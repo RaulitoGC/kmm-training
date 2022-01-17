@@ -1,12 +1,12 @@
 package com.rguzmanc.friends
 
-import kotlin.test.Test
-import kotlin.test.assertTrue
+//import kotlin.test.Test
+//import kotlin.test.assertTrue
 
 class CommonGreetingTest {
 
-    @Test
-    fun testExample() {
-        assertTrue(Greeting().greeting().contains("Hello"), "Check 'Hello' is mentioned")
-    }
+//    @Test
+//    fun testExample() {
+//        assertTrue(Greeting().greeting().contains("Hello"), "Check 'Hello' is mentioned")
+//    }
 }
