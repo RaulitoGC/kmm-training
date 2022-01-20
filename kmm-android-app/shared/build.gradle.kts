@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
-    kotlin("multiplatform")
-    kotlin("native.cocoapods")
-    id("com.android.library")
+    kotlin(KotlinPlugins.multiplatform)
+    kotlin(KotlinPlugins.nativeCocoaPods)
+    id(Plugins.androidLibrary)
 
     kotlin(KotlinPlugins.serialization) version Kotlin.version
     id(Plugins.sqlDelight)
@@ -48,12 +48,12 @@ kotlin {
                 implementation(SQLDelight.runtime)
             }
         }
-//        val commonTest by getting {
-//            dependencies {
-//                implementation(kotlin("test-common"))
-//                implementation(kotlin("test-annotations-common"))
-//            }
-//        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
 
         val androidMain by getting {
             dependencies {
@@ -61,12 +61,12 @@ kotlin {
                 implementation(SQLDelight.androidDriver)
             }
         }
-//        val androidTest by getting {
-//            dependencies {
-//                implementation(kotlin("test-junit"))
-//                implementation("junit:junit:4.13.2")
-//            }
-//        }
+        val androidTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+                implementation("junit:junit:4.13.2")
+            }
+        }
 
 //        val iosX64Main by getting
 //        val iosArm64Main by getting

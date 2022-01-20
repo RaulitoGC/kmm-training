@@ -1,12 +1,16 @@
 package com.rguzmanc.friends
 
-//import org.junit.Assert.assertTrue
-//import org.junit.Test
+import com.rguzmanc.friends.datasource.network.KtorClientFactory
+import io.ktor.client.engine.*
+import io.ktor.client.engine.android.*
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
-class AndroidGreetingTest {
+class AndroidEngineTest {
 
-//    @Test
-//    fun testExample() {
-//        assertTrue("Check Android is mentioned", Greeting().greeting().contains("Android"))
-//    }
+    @Test
+    fun `verify Android engine for http client`() {
+        val ktorClientFactory = KtorClientFactory().build()
+        assertTrue( ktorClientFactory.engine is AndroidClientEngine)
+    }
 }

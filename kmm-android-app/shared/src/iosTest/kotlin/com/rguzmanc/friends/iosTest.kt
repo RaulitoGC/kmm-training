@@ -1,12 +1,17 @@
 package com.rguzmanc.friends
 
-//import kotlin.test.Test
-//import kotlin.test.assertTrue
+import com.rguzmanc.friends.datasource.network.KtorClientFactory
+import io.ktor.client.engine.*
+import io.ktor.client.engine.ios.*
+
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class IosGreetingTest {
 
-//    @Test
-//    fun testExample() {
-//        assertTrue(Greeting().greeting().contains("iOS"), "Check iOS is mentioned")
-//    }
+    @Test
+    fun `validateiOSEngineConfig`() {
+        val ktorClientFactory = KtorClientFactory().build()
+        assertTrue( ktorClientFactory.engineConfig is IosClientEngineConfig)
+    }
 }

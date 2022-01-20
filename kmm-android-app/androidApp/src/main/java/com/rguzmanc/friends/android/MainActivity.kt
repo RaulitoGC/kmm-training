@@ -9,10 +9,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager
-            .beginTransaction()
-            .add(android.R.id.content, FriendListFragment.newInstance(), FriendListFragment.TAG)
-            .addToBackStack(FriendListFragment.TAG)
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(android.R.id.content, FriendListFragment.newInstance(), FriendListFragment.TAG)
+                .addToBackStack(FriendListFragment.TAG)
+                .commit()
+        }
     }
 }
